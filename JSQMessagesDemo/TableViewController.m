@@ -38,23 +38,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return 2;
-        case 1:
-            return 2;
-        case 2:
-            return 1;
-        case 3:
-            return 1;
-        default:
-            return 0;
+    if (section == 2) {
+        return 1;
     }
+    
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -65,7 +58,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-
+    
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
@@ -93,14 +86,7 @@
                 break;
         }
     }
-    else if (indexPath.section == 3) {
-        switch (indexPath.row) {
-            case 0:
-                cell.textLabel.text = @"Push view 2 levels";
-                break;
-        }
-    }
-
+    
     return cell;
 }
 
@@ -111,8 +97,6 @@
             return @"Presentation";
         case 2:
             return @"Demo options";
-        case 3:
-            return @"Other testing";
         default:
             return nil;
     }
@@ -120,7 +104,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return (section == 2) ? @"Copyright © 2015\nJesse Squires\nMIT License" : nil;
+    return (section == [tableView numberOfSections] - 1) ? @"Copyright © 2014\nJesse Squires\nMIT License" : nil;
 }
 
 #pragma mark - Table view delegate
@@ -160,19 +144,6 @@
             case 0:
                 [self performSegueWithIdentifier:@"SegueToSettings" sender:self];
                 break;
-        }
-    }
-    else if (indexPath.section == 3) {
-        switch (indexPath.row) {
-            case 0:
-            {
-                UIViewController *blank = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-                blank.title = @"Blank";
-                blank.view.backgroundColor = [UIColor lightGrayColor];
-                [self.navigationController pushViewController:blank animated:NO];
-                DemoMessagesViewController *vc = [DemoMessagesViewController messagesViewController];
-                [self.navigationController pushViewController:vc animated:YES];
-            }
         }
     }
 }
